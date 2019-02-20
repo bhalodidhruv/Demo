@@ -1,0 +1,163 @@
+<apex:page docType="html-5.0" controller="SEM_BlogController" showHeader="false" sidebar="false" standardStylesheets="false">
+
+   <head>
+
+       <title>Demo</title>
+
+       <!-- Libraries to take screenshot and image to pdf conversion-->
+
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.13.0/exporting/rgbcolor.js"></script>
+
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/amcharts/3.13.0/exporting/canvg.js"></script>
+
+       <!-- Code to take screenshot and image to pdf conversion-->
+
+       <script>
+
+           function render(targetElem) {
+
+               var nodesToRecover = []
+
+               var nodesToRemove = []
+
+               var svgs = $(targetElem).find('svg');
+
+               svgs.each(function(index, node) {
+
+                   var parentNode = node.parentNode
+
+                   var svg = parentNode.innerHTML
+
+                   var canvas = document.createElement('canvas')
+
+                   xml = (new XMLSerializer()).serializeToString(node)
+
+                   xml = xml.replace(/xmlns=\"http:\/\/www\.w3\.org\/2000\/svg\"/, '')
+
+                   canvg(canvas, xml); // html to image
+
+                   nodesToRecover.push({
+
+                       parent: parentNode,
+
+                       child: node
+
+                   })
+
+                   parentNode.removeChild(node)
+
+                   nodesToRemove.push({
+
+                       parent: parentNode,
+
+                       child: canvas
+
+                   })
+
+                   parentNode.appendChild(canvas)
+
+               })
+
+               
+
+               html2canvas(targetElem, {
+
+                   onrendered: function(canvas) {
+
+                       canvas.style.visibility = 'hidden'
+
+                       
+
+                       document.body.appendChild(canvas);
+
+                       var doc = new jsPDF('p', 'pt', [canvas.height,canvas.width]); // create pdf file
+
+                       doc.addHTML(canvas, {}, function() { // add image to pdf file
+
+                           sendEmail(btoa(doc.output()));
+
+                           document.body.removeChild(canvas)
+
+                       })
+
+                   }
+
+               })
+
+           }
+
+       </script>
+
+   </head>
+
+   <body>
+
+       <apex:form >
+
+           <apex:actionFunction action="{!sendEmail}" name="sendEmail" rerender="" status="counterStatus" >
+
+               <apex:param name="pdfContent" assignTo="{!pdfContent}" value="" />
+
+           </apex:actionFunction>
+
+           
+
+           <div class="buttonAndMessageContainer">
+
+               <apex:actionStatus startText="Sending Email...."
+
+                                  stopText="Email Sent Successfully!" startStyle="display:block;" stopStyle="display:none;" id="counterStatus"/>
+
+               
+
+               <div class="buttonContainer" >
+
+                   <apex:commandButton reRender="messageForSendMail" value="Send Result as Email Attachment" onclick="render(document.getElementById('resultForPdf'))"></apex:commandButton>
+
+               </div>
+
+           </div>
+
+           
+
+           <div id="resultForPdf">
+
+               <apex:repeat value="{!questionMap}" var="question">
+
+                   <div>
+
+                       <span id="{!question}"></span>
+
+                   </div>
+
+                   
+
+                   <apex:chart renderTo="{!question}" data="{!questionMap[question].chartData}" height="300" width="300" background="#F5F5F5">
+
+                       <apex:legend position="bottom"/>
+
+                       <apex:pieSeries labelField="name" dataField="data" donut="50">
+
+                           <apex:chartLabel display="none" orientation="vertical"
+
+                                            font="bold 18px Helvetica"/>
+
+                       </apex:pieSeries>
+
+                   </apex:chart>
+
+               </apex:repeat>
+
+           </div>
+
+       </apex:form>
+
+   </body>
+
+</apex:page>

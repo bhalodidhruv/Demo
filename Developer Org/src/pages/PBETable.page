@@ -1,0 +1,59 @@
+<apex:page controller="PBE1KRemoting_Con">
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"/>
+    <apex:includeScript value="https://rawgithub.com/BorisMoore/jsrender/master/jsrender.min.js"/>
+
+    <script>
+        
+        function getContacts(callback){
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.PBE1KRemoting_Con.getContacts}', 
+                function(result, event){
+                     callback(result);
+                }, 
+                {escape: false}
+            );
+        }
+ 
+        
+        //on document ready call query and render the template
+        $(function(){
+            getContacts(function(result){
+                var html = $("#contactTableRowTmpl").render(result);
+                //replace the table body with rendered html
+                $("#contactTableBody").html(html);
+                initPageBlockTableEnhancerADV();
+            });
+        })
+    </script>
+    
+    <!-- JS Render Template -->
+    <script id="contactTableRowTmpl" type="text/x-jsrender">
+        <tr class="dataRow" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} " onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
+            <td class="dataCell">{{>Name}}</td>
+            <td class="dataCell">{{>FirstName}}</td>
+            <td class="dataCell">{{>LastName}}</td>
+            <td class="dataCell">{{>Phone}}</td>
+            <td class="dataCell">{{>Email}}</td>
+        </tr>
+    </script>
+    <pbe:PageBlockTableEnhancerADV targetPbTableIds="contactsTable"/>
+    <apex:pageBlock >
+        <apex:sectionHeader title="Display more than 1K Records" subtitle="Using JSRemoting with JSRender"/>
+        <!-- Borrow some styling from Pageblock table -->
+        <table class="list" border="0" cellpadding="0" cellspacing="0" id="contactsTable">
+            <thead class="rich-table-thead">
+                <tr class="headerRow ">
+                    <th class="headerRow">Name</th>
+                    <th class="headerRow">FirstName</th>
+                    <th class="headerRow">LastName</th>
+                    <th class="headerRow">Phone</th>
+                    <th class="headerRow">Email</th>
+                </tr>
+            </thead>
+            <tbody id="contactTableBody">
+            
+            </tbody>     
+        </table>
+    </apex:pageBlock>
+    
+</apex:page>

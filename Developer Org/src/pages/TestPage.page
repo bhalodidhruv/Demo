@@ -1,0 +1,30 @@
+<apex:page controller="TestController">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:selectRadio label="Should the next question be disabled?" value="{!disabled}">
+                    <apex:selectOptions value="{!yesNo}"/>
+                    <apex:actionSupport event="onclick" status="stat" action="{!test}" reRender="test"/>
+                </apex:selectRadio>
+                <apex:outputPanel id="test">
+                
+                
+                <table style="width:100%">
+  
+
+                    <apex:selectRadio value="{!country}" disabled="{!isDisabled}">
+                    
+                        <apex:selectOptions value="{!items}">
+                            <tr>
+    <th>Firstname</th>
+    <th>Lastname</th> 
+    <th>Age</th>
+  </tr>
+                        </apex:selectOptions>
+                    </apex:selectRadio>
+                    </table>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+     </apex:form>
+</apex:page>

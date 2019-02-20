@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>csc_is_not_required_message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>csc is not required message</shortDescription>
+        <value>Card Security Code (not required, you may leave the field blank).</value>
+    </labels>
+    <labels>
+        <fullName>csc_is_not_valid_error</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>csc is not valid error</shortDescription>
+        <value>The card security code entered is not valid for this transaction.</value>
+    </labels>
+    <labels>
+        <fullName>csc_is_required_error</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>csc is required error</shortDescription>
+        <value>A card security code is required for this transaction.</value>
+    </labels>
+    <labels>
+        <fullName>csc_is_required_message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>csc is required message</shortDescription>
+        <value>Please provide Card Security Code:</value>
+    </labels>
+</CustomLabels>

@@ -1,0 +1,14 @@
+<apex:page standardController="Case">
+
+    <A HREF="#" onClick="testOpenSubtab();return false">
+        Click here to open a new subtab</A> 
+
+    <apex:includeScript value="/support/console/35.0/integration.js"/>
+    <script type="text/javascript">
+        function testOpenSubtab() {
+            srcUp('www.salesforce.com')
+        }
+        
+    
+    </script>
+</apex:page>

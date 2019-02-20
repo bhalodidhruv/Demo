@@ -1,0 +1,63 @@
+<apex:page renderAs="pdf" showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" standardController="Opportunity">
+ <html>
+    <head>
+        <style>
+           @page {
+  size: 12in 15.5in;
+  margin-top: 3cm;
+margin-bottom: 3cm;
+
+@top-left-corner {
+                                       content: element(header);
+                               }
+                               @bottom-center {
+                                     content: element(footer);
+                               }
+ 
+}
+
+div.header {
+                                      width: 715px;
+                                      height: 130px;
+                                      position: running(header);
+                           }
+                       div.footer {
+                                display: block;
+                             padding: 5px;
+                               position: running(footer);
+                      }
+                                     .pagenumber:before {
+                                        content: counter(page);
+                       }
+                                   .pagecount:before {
+                             content: counter(pages);
+                        }
+        </style>
+    </head>
+    <body>
+    
+    <div class="header" style=" width: 300%;
+        background: #9ac044;
+        color: #fff;
+        top: 0;
+        height:52px"
+          >
+       <table>
+          
+          <tr>
+            <td width="400" bgcolor="#9ac044" style="font-size: 25px;"><strong>Quotation</strong></td>
+            <td width="400" bgcolor="#9ac044" style="font-size: 17px;"><strong>Q-00012389<br/>
+September 5, 2018</strong>
+</td>
+          </tr>
+          
+        </table>
+    </div>
+    
+    
+    
+               </body>
+   </html>  
+ 
+
+</apex:page>
